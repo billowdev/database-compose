@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  scylla:
+    image: scylladb/scylla
+    container_name: scylla-container
+    ports:
+      - "9042:9042"   # Cassandra CQL native transport port
+      - "9160:9160"   # Cassandra Thrift RPC port
+      - "7000:7000"   # Cassandra inter-node communication port
+      - "7001:7001"   # Cassandra SSL inter-node communication port
+      - "7199:7199"   # Cassandra JMX monitoring port
+    volumes:
+      - scylla-data:/var/lib/scylla
+    environment:
+      - SCYLLA_CLUSTER_NAME=ScyllaCluster
+      - SCYLLA_SEEDS=<comma-separated seed IP addresses>
+
+volumes:
+  scylla-data:
+    driver: local
