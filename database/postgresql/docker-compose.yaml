@@ -1,18 +1,25 @@
 version: '3.8'
 
 services:
-  postgresql:
-    image: postgres:latest
-    container_name: postgresql
-    restart: always
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres # Replace 'your_password' with your desired password
-      - POSTGRES_DB=postgres # Optionally specify a database name
+      POSTGRES_USER: temporal
+      POSTGRES_PASSWORD: temporal
+      POSTGRES_DB: temporal
     ports:
-      - "5434:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    networks:
+      - postgres_network
 
 volumes:
   postgres_data:
+    driver: local
+
+networks:
+  postgres_network:
+    driver: bridge
